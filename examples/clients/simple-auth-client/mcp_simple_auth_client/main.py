@@ -7,6 +7,7 @@ This client connects to an MCP server using streamable HTTP transport with OAuth
 """
 
 import asyncio
+import logging
 import os
 import threading
 import time
@@ -333,6 +334,12 @@ async def main():
     """Main entry point."""
     # Default server URL - can be overridden with environment variable
     # Most MCP streamable HTTP servers use /mcp as the endpoint
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(levelname)s: %(name)s: %(message)s'
+    )
+    logging.getLogger("httpx").setLevel(logging.DEBUG)
+    logging.getLogger("httpcore").setLevel(logging.DEBUG)
     server_url = os.getenv("MCP_SERVER_PORT", 8000)
     transport_type = os.getenv("MCP_TRANSPORT_TYPE", "streamable-http")
     server_url = (
