@@ -461,6 +461,7 @@ class OAuthClientProvider(httpx.Auth):
                 try:
                     # OAuth flow must be inline due to generator constraints
                     www_auth_resource_metadata_url = extract_resource_metadata_from_www_auth(response)
+                    www_auth_scope = extract_scope_from_www_auth(response)
 
                     # Step 1: Discover protected resource metadata (SEP-985 with fallback support)
                     prm_discovery_urls = build_protected_resource_metadata_discovery_urls(
@@ -506,7 +507,7 @@ class OAuthClientProvider(httpx.Auth):
 
                     # Step 3: Apply scope selection strategy
                     self.context.client_metadata.scope = get_client_metadata_scopes(
-                        www_auth_resource_metadata_url,
+                        www_auth_scope,
                         self.context.protected_resource_metadata,
                         self.context.oauth_metadata,
                     )
